@@ -1,90 +1,89 @@
-# Copyright (c) CadQuery Development Team.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-import os
+"""Setup configuration for CadQuery."""
+
 from setuptools import setup, find_packages
+import re
+import os
 
-reqs = []
-setup_reqs = []
 
-# ReadTheDocs, AppVeyor and Azure builds will break when trying to instal pip deps in a conda env
-is_rtd = "READTHEDOCS" in os.environ
-is_appveyor = "APPVEYOR" in os.environ
-is_azure = "CONDA_PY" in os.environ
-is_conda = "CONDA_PREFIX" in os.environ
+def get_version():
+    """Read version from cadquery/__init__.py without importing the module."""
+    version_file = os.path.join(os.path.dirname(__file__), "cadquery", "__init__.py")
+    if not os.path.exists(version_file):
+        return "0.0.1"
+    with open(version_file, "r") as f:
+        content = f.read()
+    match = re.search(r'^__version__\s*=\s*["\']([^"\']+)["\']', content, re.MULTILINE)
+    if match:
+        return match.group(1)
+    return "0.0.1"
 
-# Only include the installation dependencies if we are not running on RTD or AppVeyor or in a conda env
-if not is_rtd and not is_appveyor and not is_azure and not is_conda:
-    reqs = [
-        "cadquery-ocp>=7.9.3.1,<8.0",
-        "ezdxf>=1.3.0",
-        "multimethod>=1.11,<2.0",
-        "nlopt>=2.9.0,<3.0",
-        "runtype",
-        "casadi",
-        "trame",
-        "trame-vtk",
-        "trame-components",
-        "trame-vuetify",
-        "pyparsing>=3.0.0",
-        "scipy",
-        "numba",
-    ]
+
+def get_long_description():
+    """Read the long description from README.md."""
+    readme_path = os.path.join(os.path.dirname(__file__), "README.md")
+    if os.path.exists(readme_path):
+        with open(readme_path, "r", encoding="utf-8") as f:
+            return f.read()
+    return ""
 
 
 setup(
     name="cadquery",
-    version="2.8.0dev",
-    url="https://github.com/CadQuery/cadquery",
-    license="Apache Public License 2.0",
-    author="David Cowden",
-    author_email="dave.cowden@gmail.com",
-    description="CadQuery is a parametric  scripting language for creating and traversing CAD models",
-    long_description=open("README.md").read(),
+    version=get_version(),
+    description="A parametric 3D CAD scripting framework based on OCCT",
+    long_description=get_long_description(),
     long_description_content_type="text/markdown",
-    packages=find_packages(exclude=("tests",)),
-    python_requires=">=3.11",
-    setup_requires=setup_reqs,
-    install_requires=reqs,
+    author="CadQuery Contributors",
+    url="https://github.com/CadQuery/cadquery",
+    license="Apache License 2.0",
+    packages=find_packages(exclude=["tests", "tests.*", "doc", "doc.*"]),
+    python_requires=">=3.8",
+    install_requires=[
+        "pyparsing>=2.1.0",
+        "nptyping>=1.4.0",
+        "typing_extensions>=4.0.0",
+    ],
     extras_require={
         "dev": [
-            "docutils",
-            "ipython",
-            "pytest",
-            # "black@git+https://github.com/cadquery/black.git@cq",
+            "pytest>=6.0",
+            "pytest-cov>=2.0",
+            "black",
+            "flake8",
+            "mypy",
+            "sphinx",
+            "sphinx-rtd-theme",
         ],
-        "ipython": ["ipython",],
+        "docs": [
+            "sphinx",
+            "sphinx-rtd-theme",
+            "sphinx-autodoc-typehints",
+        ],
     },
-    include_package_data=True,
-    zip_safe=False,
-    platforms="any",
-    test_suite="tests",
     classifiers=[
         "Development Status :: 5 - Production/Stable",
-        #'Development Status :: 6 - Mature',
-        #'Development Status :: 7 - Inactive',
         "Intended Audience :: Developers",
-        "Intended Audience :: End Users/Desktop",
-        "Intended Audience :: Information Technology",
         "Intended Audience :: Science/Research",
-        "Intended Audience :: System Administrators",
         "License :: OSI Approved :: Apache Software License",
-        "Operating System :: POSIX",
-        "Operating System :: MacOS",
-        "Operating System :: Unix",
-        "Programming Language :: Python",
-        "Topic :: Software Development :: Libraries :: Python Modules",
-        "Topic :: Internet",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
         "Topic :: Scientific/Engineering",
+        "Topic :: Software Development :: Libraries :: Python Modules",
     ],
+    keywords=[
+        "CAD",
+        "3D",
+        "parametric",
+        "OCCT",
+        "OpenCASCADE",
+        "modeling",
+        "geometry",
+    ],
+    project_urls={
+        "Documentation": "https://cadquery.readthedocs.io",
+        "Source": "https://github.com/CadQuery/cadquery",
+        "Bug Tracker": "https://github.com/CadQuery/cadquery/issues",
+    },
 )
