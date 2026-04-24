@@ -13,6 +13,10 @@ Basic usage::
 
 Note: This is a personal fork. See https://github.com/CadQuery/cadquery for
 the upstream project.
+
+Personal notes:
+    - Studying the assembly and constraint solver internals
+    - Experimenting with custom selectors for project-specific workflows
 """
 
 from .occ_impl.geom import Vector, Matrix, Plane, BoundBox
