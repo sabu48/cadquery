@@ -1,80 +1,109 @@
-from importlib.metadata import version, PackageNotFoundError
+"""
+CadQuery - A parametric 3D CAD scripting framework built on top of OCCT.
 
-try:
-    __version__ = version("cadquery")
-except PackageNotFoundError:
-    # package is not installed
-    __version__ = "2.8.0dev"
+CadQuery is a Python module for building 3D CAD models. It is similar to
+OpenSCAD, but uses Python as the scripting language. It is built on top of
+the Open CASCADE Technology (OCCT) geometric kernel via the pythonOCC bindings.
 
-# these items point to the OCC implementation
-from .occ_impl.geom import Plane, BoundBox, Vector, Matrix, Location
+Basic usage::
+
+    import cadquery as cq
+
+    result = cq.Workplane("front").box(2, 2, 0.5)
+
+"""
+
+from .occ_impl.geom import Vector, Matrix, Plane, BoundBox
 from .occ_impl.shapes import (
     Shape,
     Vertex,
     Edge,
-    Face,
     Wire,
-    Solid,
+    Face,
     Shell,
+    Solid,
     Compound,
-    sortWiresByBuildOrder,
+    CompSolid,
 )
-from .occ_impl import exporters
-from .occ_impl import importers
+from .occ_impl.exporters import exporters
+from .occ_impl.assembly import (
+    Assembly,
+    Constraint,
+    ConstraintKind,
+)
 
-# these items are the common implementation
-
-# the order of these matter
+from .cq import CQ, Workplane
 from .selectors import (
+    Selector,
     NearestToPointSelector,
     ParallelDirSelector,
     DirectionSelector,
     PerpendicularDirSelector,
     TypeSelector,
     DirectionMinMaxSelector,
+    CenterNthSelector,
+    RadiusNthSelector,
+    LengthNthSelector,
+    AndSelector,
+    SumSelector,
+    SubtractSelector,
+    InverseSelector,
     StringSyntaxSelector,
-    Selector,
 )
 from .sketch import Sketch
-from .cq import CQ, Workplane
-from .assembly import Assembly, Color, Constraint, Material
-from . import selectors
-from . import plugins
+from . import cq_types as types
 
+# Expose the Location type for assembly positioning
+from .occ_impl.geom import Location
+
+__version__ = "2.4.0"
+__author__ = "CadQuery Authors"
+__license__ = "Apache Public License 2.0"
 
 __all__ = [
-    "CQ",
-    "Workplane",
-    "Assembly",
-    "Color",
-    "Constraint",
-    "Material",
-    "plugins",
-    "selectors",
+    # Geometry primitives
+    "Vector",
+    "Matrix",
     "Plane",
     "BoundBox",
-    "Matrix",
-    "Vector",
     "Location",
-    "sortWiresByBuildOrder",
+    # Shapes
     "Shape",
     "Vertex",
     "Edge",
     "Wire",
     "Face",
-    "Solid",
     "Shell",
+    "Solid",
     "Compound",
-    "exporters",
-    "importers",
+    "CompSolid",
+    # Core workplane
+    "CQ",
+    "Workplane",
+    # Sketch
+    "Sketch",
+    # Assembly
+    "Assembly",
+    "Constraint",
+    "ConstraintKind",
+    # Selectors
+    "Selector",
     "NearestToPointSelector",
     "ParallelDirSelector",
     "DirectionSelector",
     "PerpendicularDirSelector",
     "TypeSelector",
     "DirectionMinMaxSelector",
+    "CenterNthSelector",
+    "RadiusNthSelector",
+    "LengthNthSelector",
+    "AndSelector",
+    "SumSelector",
+    "SubtractSelector",
+    "InverseSelector",
     "StringSyntaxSelector",
-    "Selector",
-    "plugins",
-    "Sketch",
+    # Exporters
+    "exporters",
+    # Types
+    "types",
 ]
