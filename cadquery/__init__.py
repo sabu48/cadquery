@@ -1,4 +1,4 @@
-"""
+""" 
 CadQuery - A parametric 3D CAD scripting framework built on top of OCCT.
 
 CadQuery is a Python module for building 3D CAD models. It is similar to
@@ -11,6 +11,8 @@ Basic usage::
 
     result = cq.Workplane("front").box(2, 2, 0.5)
 
+Note: This is a personal fork. See https://github.com/CadQuery/cadquery for
+the upstream project.
 """
 
 from .occ_impl.geom import Vector, Matrix, Plane, BoundBox
@@ -59,6 +61,10 @@ from .occ_impl.geom import Location
 __version__ = "2.4.0"
 __author__ = "CadQuery Authors"
 __license__ = "Apache Public License 2.0"
+
+# Personal fork metadata
+__fork_author__ = "personal"
+__fork_notes__ = "Personal learning fork; upstream at CadQuery/cadquery"
 
 __all__ = [
     # Geometry primitives
