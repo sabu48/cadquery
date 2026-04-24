@@ -17,6 +17,7 @@ the upstream project.
 Personal notes:
     - Studying the assembly and constraint solver internals
     - Experimenting with custom selectors for project-specific workflows
+    - Added cq_version() helper for quick version checks in scripts
 """
 
 from .occ_impl.geom import Vector, Matrix, Plane, BoundBox
@@ -70,6 +71,18 @@ __license__ = "Apache Public License 2.0"
 __fork_author__ = "personal"
 __fork_notes__ = "Personal learning fork; upstream at CadQuery/cadquery"
 
+
+def cq_version():
+    """Return a short version string. Handy for quick sanity checks in scripts.
+
+    Example::
+
+        import cadquery as cq
+        print(cq.cq_version())  # 'CadQuery 2.4.0 (personal fork)'
+    """
+    return f"CadQuery {__version__} (personal fork)"
+
+
 __all__ = [
     # Geometry primitives
     "Vector",
@@ -116,4 +129,6 @@ __all__ = [
     "exporters",
     # Types
     "types",
+    # Utilities
+    "cq_version",
 ]
