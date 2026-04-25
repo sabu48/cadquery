@@ -144,11 +144,7 @@ __all__ = [
     "SubtractSelector",
     "InverseSelector",
     "StringSyntaxSelector",
-    # Exporters
-    "exporters",
-    # Types
-    "types",
-    # Utilities
+    # Helpers (personal fork additions)
     "cq_version",
     "cq_info",
 ]
