@@ -18,6 +18,7 @@ Personal notes:
     - Studying the assembly and constraint solver internals
     - Experimenting with custom selectors for project-specific workflows
     - Added cq_version() helper for quick version checks in scripts
+    - Added cq_info() helper for a more detailed summary (origin, license, etc.)
 """
 
 from .occ_impl.geom import Vector, Matrix, Plane, BoundBox
@@ -83,6 +84,24 @@ def cq_version():
     return f"CadQuery {__version__} (personal fork)"
 
 
+def cq_info():
+    """Return a multi-line summary string with version, author, and license info.
+
+    Useful when logging environment details at the top of a script.
+
+    Example::
+
+        import cadquery as cq
+        print(cq.cq_info())
+    """
+    return (
+        f"CadQuery {__version__}\n"
+        f"  Author : {__author__}\n"
+        f"  License: {__license__}\n"
+        f"  Fork   : {__fork_notes__}"
+    )
+
+
 __all__ = [
     # Geometry primitives
     "Vector",
@@ -131,4 +150,5 @@ __all__ = [
     "types",
     # Utilities
     "cq_version",
+    "cq_info",
 ]
